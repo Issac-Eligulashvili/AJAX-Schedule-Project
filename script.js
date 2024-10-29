@@ -68,7 +68,6 @@ $('#submitDay').on('click', () => {
                     'E': [1, 2, 3, 7, 5],
                     'F': [4, 1, 2, 6, 7],
                     'G': [3, 4, 7, 5, 6],
-
                }
                //get the correct order for periods based on the current day's letter
                const periods = periodMap[currentDay];
