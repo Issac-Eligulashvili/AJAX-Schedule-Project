@@ -6,11 +6,13 @@ let time = `${date.getHours()}:${date.getMinutes()}`;
 
 //get the letter day and if it is a half day
 let currentDay;
+let isHalfDay;
 $.ajax({
      type: "GET",
      url: "https://api.npoint.io/9294296d96328477aa64",
      success: function (data) {
           currentDay = data[currentMonth][day - 1].letter;
+          isHalfDay = data[currentMonth][day - 1].halfDay;
           $('#formGroup').text(currentDay);
      }
 });
@@ -66,13 +68,25 @@ $('#submitDay').on('click', () => {
                     //create a new array which maps the correct class to the period based on the order of the periods
                     const newArray = periods.map(block => classesForToday.find(obj => obj.period === block));
                     //create the time for the bell schedule and inclue lunch times.
-                    const bellSchedule = {
-                         1: { start: '8:24 AM', end: '9:31 AM' },
-                         2: { start: '9:36 AM', end: '10:43 AM' },
-                         3: { start: '10:48 AM', end: '11:55 AM' },
-                         lunch: { start: '12:00 PM', end: '12:35 PM' },
-                         4: { start: '12:41 PM', end: '1:48 PM' },
-                         5: { start: '1:53 PM', end: '3:00 PM' }
+                    let bellSchedule;
+
+                    if (isHalfDay) {
+                         bellSchedule = {
+                              1: { start: '8:24 AM', end: '9:14 AM' },
+                              2: { start: '9:19 AM', end: '10:09 AM' },
+                              3: { start: '10:14 AM', end: '11:04 AM' },
+                              4: { start: '11:09 AM', end: '11:59 AM' },
+                              5: { start: '12:04 PM', end: '12:54 PM' }
+                         }
+                    } else {
+                         bellSchedule = {
+                              1: { start: '8:24 AM', end: '9:31 AM' },
+                              2: { start: '9:36 AM', end: '10:43 AM' },
+                              3: { start: '10:48 AM', end: '11:55 AM' },
+                              lunch: { start: '12:00 PM', end: '12:35 PM' },
+                              4: { start: '12:41 PM', end: '1:48 PM' },
+                              5: { start: '1:53 PM', end: '3:00 PM' }
+                         }
                     }
                     newArray.forEach((item, index) => {
                          item.time = bellSchedule[index + 1]; //set the correct time for that class based on the periods of the class, making sure the period and time for that period correspond
@@ -93,7 +107,7 @@ $('#submitDay').on('click', () => {
                               })
                          }
                          //create the lunch item after the 3rd row was created but before the 4th row is 
-                         if (index === 2) {
+                         if (index === 2 && !isHalfDay) {
                               $('#scheduleList').append(
                                    `<tr>
                                         <td>LUNCH</td>
