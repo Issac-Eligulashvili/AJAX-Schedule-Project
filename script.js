@@ -79,7 +79,7 @@ $('#submitDay').on('click', () => {
                          //append the rows based on the current index
                          $('#scheduleList').append(
                               `<tr>
-                                   <td>${item.period}</td>
+                                   <td>${index + 1}</td>
                                    <td>${item.time.start} - ${item.time.end}</td>
                                    <td>${item.class}</td>
                                    <td>${item.teacher}</td>
