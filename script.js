@@ -43,6 +43,7 @@ function isCurrentClass(startTime, endTime) {
      let start = convertTime(startTime);
      let end = convertTime(endTime);
      let currentTime = convertTime(time);
+     console.log(start, currentTime, end);
      //check if the amount of minutes passed is more than the start time but less than the end time
      return (start <= currentTime && currentTime <= end);
 }
@@ -106,9 +107,9 @@ $('#submitDay').on('click', () => {
                                    <td>${item.room}</td>
                               </tr>`
                     )
-
+                    //check if the current time is within a class' timeframe and change the bg color if true
                     if (isCurrentClass(item.time.start, item.time.end)) {
-                         $('#scheduleList').last().css({
+                         $($('#scheduleList').children()[index]).css({
                               backgroundColor: 'yellow',
                          })
                     }
@@ -129,7 +130,6 @@ $('#submitDay').on('click', () => {
                })
 
                let scheduleData = $('#scheduleList').html();
-               console.log(scheduleData);
                localStorage.setItem('scheduleTable', scheduleData);
           }
      });
